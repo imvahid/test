@@ -185,6 +185,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Modules\TwoFactorAuth\Providers\TwoFactorAuthServiceProvider::class,
 
         /*
          * Application Service Providers...

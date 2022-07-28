@@ -24,12 +24,14 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "Modules\\TwoFactorAuth\\": "modules/two_factor_auth/app/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests/",
+            "Modules\\TwoFactorAuth\\Tests\\": "modules/two_factor_auth/tests"
         }
     },
     "scripts": {
