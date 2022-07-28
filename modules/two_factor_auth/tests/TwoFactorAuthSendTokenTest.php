@@ -13,12 +13,16 @@ class TwoFactorAuthSendTokenTest extends TestCase
     public function test_sample()
     {
         User::unguard();
-        $this->withoutExceptionHandling();
 
         UserProviderFacade::shouldReceive('getUserByEmail')
             ->once()
             ->with('imvahid@gmail.com')
             ->andReturn($user = new User(['id' => 1, 'email' => 'imvahid@gmail.com']));
+
+        UserProviderFacade::shouldReceive('isBanned')
+            ->once()
+            ->with($user->id)
+            ->andReturn(false);
 
         TokenGeneratorFacade::shouldReceive('generateToken')
             ->once()
@@ -31,5 +35,30 @@ class TwoFactorAuthSendTokenTest extends TestCase
 
         $response = $this->get('/api/two-factor-auth/send?email=imvahid@gmail.com');
         $this->assertTrue($response->content() == 'hello');
+    }
+
+    public function test_user_is_banned()
+    {
+        User::unguard();
+
+        UserProviderFacade::shouldReceive('getUserByEmail')
+            ->once()
+            ->with('imvahid@gmail.com')
+            ->andReturn($user = new User(['id' => 1, 'email' => 'imvahid@gmail.com']));
+
+        UserProviderFacade::shouldReceive('isBanned')
+            ->once()
+            ->with($user->id)
+            ->andReturn(true);
+
+        TokenGeneratorFacade::shouldReceive('generateToken')
+            ->never();
+
+        TokenStoreFacade::shouldReceive('saveToken')
+            ->never();
+
+        $response = $this->get('/api/two-factor-auth/send?email=imvahid@gmail.com');
+        $response->assertStatus(400);
+        $response->assertJson(['message' => 'You are blocked']);
     }
 }
