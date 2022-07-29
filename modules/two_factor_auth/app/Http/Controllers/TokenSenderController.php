@@ -5,6 +5,7 @@ namespace Modules\TwoFactorAuth\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Modules\TwoFactorAuth\Facades\ResponderFacade;
 use Modules\TwoFactorAuth\Facades\TokenGeneratorFacade;
+use Modules\TwoFactorAuth\Facades\TokenSenderFacade;
 use Modules\TwoFactorAuth\Facades\TokenStoreFacade;
 use Modules\TwoFactorAuth\Facades\UserProviderFacade;
 
@@ -30,7 +31,9 @@ class TokenSenderController extends Controller
 
         // 3. Save token
         TokenStoreFacade::saveToken($token, $user->id);
+
         // 4. Send token
+        TokenSenderFacade::send($token, $user->id);
 
         // 5. Send response
         return ResponderFacade::tokenSent();
