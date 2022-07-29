@@ -15,4 +15,9 @@ class ReactResponsesService
     {
         return response(['message' => 'Token was sent'], Response::HTTP_OK);
     }
+
+    public function userNotFound()
+    {
+        return response(['message' => 'Email does not exist'], Response::HTTP_BAD_REQUEST);
+    }
 }

@@ -15,4 +15,9 @@ class AndroidResponsesService
     {
         return response(['msg' => 'Token was sent'], Response::HTTP_OK);
     }
+
+    public function userNotFound()
+    {
+        return response(['msg' => 'Email does not exist'], Response::HTTP_BAD_REQUEST);
+    }
 }

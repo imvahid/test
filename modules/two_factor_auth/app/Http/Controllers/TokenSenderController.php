@@ -18,10 +18,13 @@ class TokenSenderController extends Controller
         // Check user is guest
         // Throttle the route
 
-        // 1. Stop block users
         // Find user row in database or fail
         $user = UserProviderFacade::getUserByEmail($email);
+        if(!$user) {
+            return ResponderFacade::userNotFound();
+        }
 
+        // 1. Stop block users
         if(UserProviderFacade::isBanned($user->id)) {
             return ResponderFacade::blockedUser();
         }

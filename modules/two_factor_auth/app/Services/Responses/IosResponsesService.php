@@ -15,4 +15,9 @@ class IosResponsesService
     {
         return response(['result' => 'Token was sent'], Response::HTTP_OK);
     }
+
+    public function userNotFound()
+    {
+        return response(['result' => 'Email does not exist'], Response::HTTP_BAD_REQUEST);
+    }
 }

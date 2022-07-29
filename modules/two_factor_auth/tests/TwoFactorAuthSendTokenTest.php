@@ -106,4 +106,29 @@ class TwoFactorAuthSendTokenTest extends TestCase
         $response = $this->get('/api/two-factor-auth/send?email=imvahid@gmail.com&client=android');
         $response->assertJson(['msg' => 'Token was sent']);
     }
+
+    public function test_user_does_not_exist()
+    {
+        UserProviderFacade::shouldReceive('getUserByEmail')
+            ->once()
+            ->with('imvahid@gmail.com')
+            ->andReturn(null);
+
+        UserProviderFacade::shouldReceive('isBanned')
+            ->never();
+
+        TokenGeneratorFacade::shouldReceive('generateToken')
+            ->never();
+
+        TokenStoreFacade::shouldReceive('saveToken')
+            ->never();
+
+        TokenSenderFacade::shouldReceive('send')
+            ->never();
+
+        // Not run underline implementation, just mocking this
+        ResponderFacade::shouldReceive('userNotFound')->once();
+
+        $this->get('/api/two-factor-auth/send?email=imvahid@gmail.com&client');
+    }
 }

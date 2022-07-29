@@ -12,6 +12,7 @@ use Modules\TwoFactorAuth\Services\Responses\VueResponsesService;
  *
  * @method static blockedUser()
  * @method static tokenSent()
+ * @method static userNotFound()
  *
  */
 
